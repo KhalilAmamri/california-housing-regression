@@ -1,3 +1,16 @@
+"""
+California House Price Predictor
+=================================
+A Streamlit web application for predicting California house prices using Multiple Linear Regression.
+Trained on the California Housing Dataset (1990 census data).
+
+Author: Khalil Amamri
+Repository: california-housing-regression
+"""
+
+# ============================================================================
+# IMPORTS
+# ============================================================================
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -5,7 +18,10 @@ import joblib
 import plotly.graph_objects as go
 from pathlib import Path
 
-# Page configuration
+
+# ============================================================================
+# PAGE CONFIGURATION
+# ============================================================================
 st.set_page_config(
     page_title="California House Price Predictor", 
     page_icon="🏠", 
@@ -13,7 +29,9 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for professional styling
+# ============================================================================
+# CUSTOM CSS STYLING
+# ============================================================================
 st.markdown("""
 <style>
     /* Main container styling */
@@ -172,16 +190,29 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Load the trained model and preprocessing artifacts
+
+# ============================================================================
+# MODEL LOADING
+# ============================================================================
 @st.cache_resource
 def load_model():
+    """
+    Load the trained model and preprocessing artifacts from disk.
+    
+    Returns:
+        dict: Dictionary containing model, scaler, and other preprocessing objects
+    """
     model_path = Path(__file__).parent.parent / 'models' / 'best_model.pkl'
+    
     if not model_path.exists():
         st.error(f"⚠️ Model file not found at: {model_path}")
         st.info("📝 Please run the notebook `california-housing-regression.ipynb` first to train and save the model.")
         st.stop()
+    
     return joblib.load(model_path)
 
+
+# Load model artifacts
 artifact = load_model()
 model = artifact['model']
 scaler = artifact['scaler']
@@ -189,7 +220,10 @@ numeric_cols = artifact['numeric_columns']
 final_columns = artifact['final_columns']
 bedrooms_median = artifact['bedrooms_median']
 
-# Header with gradient background
+
+# ============================================================================
+# HEADER SECTION
+# ============================================================================
 st.markdown("""
 <div style='background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
             padding: 2.5rem; 
@@ -204,7 +238,10 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Sidebar inputs with enhanced styling
+
+# ============================================================================
+# SIDEBAR - INPUT FORM
+# ============================================================================
 st.sidebar.markdown("""
 <div style='background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%); 
             padding: 1.5rem; 
@@ -216,32 +253,103 @@ st.sidebar.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# Location inputs
 st.sidebar.markdown("### 📍 Location")
-longitude = st.sidebar.slider("Longitude", -124.5, -114.0, -119.5, 0.1)
-latitude = st.sidebar.slider("Latitude", 32.0, 42.0, 37.0, 0.1)
+longitude = st.sidebar.slider(
+    "Longitude", 
+    min_value=-124.5, 
+    max_value=-114.0, 
+    value=-119.5, 
+    step=0.1,
+    help="Longitude coordinate of the property location"
+)
+latitude = st.sidebar.slider(
+    "Latitude", 
+    min_value=32.0, 
+    max_value=42.0, 
+    value=37.0, 
+    step=0.1,
+    help="Latitude coordinate of the property location"
+)
 
+# Property characteristics
 st.sidebar.markdown("### 🏘️ Property Characteristics")
-housing_median_age = st.sidebar.slider("Housing Median Age (years)", 1, 52, 25)
-total_rooms = st.sidebar.number_input("Total Rooms", min_value=10, max_value=40000, value=2000, step=50)
-total_bedrooms = st.sidebar.number_input("Total Bedrooms", min_value=1, max_value=6400, value=400, step=10)
+housing_median_age = st.sidebar.slider(
+    "Housing Median Age (years)", 
+    min_value=1, 
+    max_value=52, 
+    value=25,
+    help="Median age of houses in the block"
+)
+total_rooms = st.sidebar.number_input(
+    "Total Rooms", 
+    min_value=10, 
+    max_value=40000, 
+    value=2000, 
+    step=50,
+    help="Total number of rooms in the block"
+)
+total_bedrooms = st.sidebar.number_input(
+    "Total Bedrooms", 
+    min_value=1, 
+    max_value=6400, 
+    value=400, 
+    step=10,
+    help="Total number of bedrooms in the block"
+)
 
+# Demographics
 st.sidebar.markdown("### 👥 Demographics")
-population = st.sidebar.number_input("Population", min_value=3, max_value=35682, value=1500, step=50)
-households = st.sidebar.number_input("Households", min_value=1, max_value=6082, value=400, step=10)
-median_income = st.sidebar.slider("Median Income ($10k)", 0.5, 15.0, 3.5, 0.1)
+population = st.sidebar.number_input(
+    "Population", 
+    min_value=3, 
+    max_value=35682, 
+    value=1500, 
+    step=50,
+    help="Total population in the block"
+)
+households = st.sidebar.number_input(
+    "Households", 
+    min_value=1, 
+    max_value=6082, 
+    value=400, 
+    step=10,
+    help="Total number of households in the block"
+)
+median_income = st.sidebar.slider(
+    "Median Income ($10k)", 
+    min_value=0.5, 
+    max_value=15.0, 
+    value=3.5, 
+    step=0.1,
+    help="Median income for households in the block (in tens of thousands USD)"
+)
 
+# Ocean proximity
 st.sidebar.markdown("### 🌊 Proximity")
 ocean_proximity = st.sidebar.selectbox(
     "Ocean Proximity",
-    ["<1H OCEAN", "INLAND", "ISLAND", "NEAR BAY", "NEAR OCEAN"]
+    ["<1H OCEAN", "INLAND", "ISLAND", "NEAR BAY", "NEAR OCEAN"],
+    help="Proximity to the ocean"
 )
 
 st.sidebar.markdown("---")
-# Predict button
-predict_button = st.sidebar.button("🔮 Predict Price", type="primary", use_container_width=True)
 
+# Predict button
+predict_button = st.sidebar.button(
+    "🔮 Predict Price", 
+    type="primary", 
+    use_container_width=True
+)
+
+
+# ============================================================================
+# PREDICTION LOGIC
+# ============================================================================
 if predict_button:
-    # Validation checks
+    # -------------------------------------------------------------------------
+    # Input Validation
+    # -------------------------------------------------------------------------
     if households == 0:
         st.error("❌ Households cannot be zero!")
         st.stop()
@@ -253,6 +361,9 @@ if predict_button:
     if population < households:
         st.warning("⚠️ Warning: Population is less than Households (unusual but allowed)")
     
+    # -------------------------------------------------------------------------
+    # Data Preparation
+    # -------------------------------------------------------------------------
     # Create input dataframe
     input_data = {
         'longitude': longitude,
@@ -268,11 +379,16 @@ if predict_button:
     
     df_input = pd.DataFrame([input_data])
     
-    # Create engineered features
+    # -------------------------------------------------------------------------
+    # Feature Engineering
+    # -------------------------------------------------------------------------
     df_input['rooms_per_household'] = df_input['total_rooms'] / df_input['households']
     df_input['bedrooms_per_room'] = df_input['total_bedrooms'] / df_input['total_rooms']
     df_input['population_per_household'] = df_input['population'] / df_input['households']
     
+    # -------------------------------------------------------------------------
+    # Encoding and Alignment
+    # -------------------------------------------------------------------------
     # One-hot encode ocean_proximity
     df_input = pd.get_dummies(df_input, columns=['ocean_proximity'], drop_first=True)
     
@@ -283,55 +399,75 @@ if predict_button:
     
     df_input = df_input[final_columns]
     
-    # Scale numeric features
+    # -------------------------------------------------------------------------
+    # Feature Scaling
+    # -------------------------------------------------------------------------
     df_input[numeric_cols] = scaler.transform(df_input[numeric_cols])
     
-    # Make prediction
-    prediction = model.predict(df_input)[0]
-    prediction_tnd = prediction * 3.15  # Convert to Tunisian Dinar
+    # -------------------------------------------------------------------------
+    # Make Prediction
+    # -------------------------------------------------------------------------
+    raw_prediction = model.predict(df_input)[0]
     
-    # Display results with enhanced design
+    # Prevent negative prices (house prices cannot be negative)
+    prediction = max(raw_prediction, 0.0)
+    
+    # Show warning if price was clamped to zero
+    if prediction == 0.0:
+        st.warning("⚠️ Inputs are unrealistic or the area is extremely low-value – price set to $0")
+    
+    # Convert to Tunisian Dinar (1 USD = 3.15 TND)
+    prediction_tnd = prediction * 3.15
+    
+    # -------------------------------------------------------------------------
+    # Display Results
+    # -------------------------------------------------------------------------
     st.markdown("### 💰 Prediction Results")
     
     col1, col2, col3 = st.columns([2, 2, 2])
     
+    # Price Display
     with col1:
-        st.markdown("""
+        st.markdown(f"""
         <div class='price-display'>
             <p style='color: white; font-size: 1.2rem; margin: 0; opacity: 0.9;'>Estimated Price (USD)</p>
-            <h1 style='color: white; font-size: 3rem; margin: 0.5rem 0;'>${:,.0f}</h1>
-            <p style='color: white; font-size: 1rem; margin: 0; opacity: 0.8;'>≈ {:,.0f} TND</p>
+            <h1 style='color: white; font-size: 3rem; margin: 0.5rem 0;'>${prediction:,.0f}</h1>
+            <p style='color: white; font-size: 1rem; margin: 0; opacity: 0.8;'>≈ {prediction_tnd:,.0f} TND</p>
         </div>
-        """.format(prediction, prediction_tnd), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     
+    # Model Information
     with col2:
-        st.markdown("""
+        st.markdown(f"""
         <div class='feature-card'>
             <h3 style='color: #14b8a6; margin-top: 0;'>🤖 Model Information</h3>
-            <p><strong>Algorithm:</strong> {}</p>
-            <p><strong>Total Features:</strong> {}</p>
-            <p><strong>Engineered Features:</strong> {}</p>
+            <p><strong>Algorithm:</strong> {artifact['model_name']}</p>
+            <p><strong>Total Features:</strong> {len(final_columns)}</p>
+            <p><strong>Engineered Features:</strong> {len(artifact['engineered_features'])}</p>
             <p><strong>R² Score:</strong> ~0.60</p>
         </div>
-        """.format(artifact['model_name'], len(final_columns), len(artifact['engineered_features'])), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     
+    # Key Metrics
     with col3:
-        st.markdown("""
+        rooms_per_hh = df_input['rooms_per_household'].values[0]
+        bedrooms_per_room = df_input['bedrooms_per_room'].values[0]
+        pop_per_hh = df_input['population_per_household'].values[0]
+        annual_income = median_income * 10000
+        
+        st.markdown(f"""
         <div class='feature-card'>
             <h3 style='color: #14b8a6; margin-top: 0;'>📊 Key Metrics</h3>
-            <p><strong>Rooms/Household:</strong> {:.2f}</p>
-            <p><strong>Bedrooms/Room:</strong> {:.3f}</p>
-            <p><strong>Population/Household:</strong> {:.2f}</p>
-            <p><strong>Annual Income:</strong> ${:,.0f}</p>
+            <p><strong>Rooms/Household:</strong> {rooms_per_hh:.2f}</p>
+            <p><strong>Bedrooms/Room:</strong> {bedrooms_per_room:.3f}</p>
+            <p><strong>Population/Household:</strong> {pop_per_hh:.2f}</p>
+            <p><strong>Annual Income:</strong> ${annual_income:,.0f}</p>
         </div>
-        """.format(
-            df_input['rooms_per_household'].values[0],
-            df_input['bedrooms_per_room'].values[0],
-            df_input['population_per_household'].values[0],
-            median_income * 10000
-        ), unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
     
-    # Display map with enhanced styling
+    # -------------------------------------------------------------------------
+    # Interactive Map
+    # -------------------------------------------------------------------------
     st.markdown("---")
     st.markdown("### 🗺️ Property Location on California Map")
     
@@ -372,30 +508,36 @@ if predict_button:
     
     st.plotly_chart(fig, use_container_width=True)
     
-    # Feature summary with cards
+    # -------------------------------------------------------------------------
+    # Detailed Property Analysis
+    # -------------------------------------------------------------------------
     st.markdown("---")
     st.markdown("### 📋 Detailed Property Analysis")
     
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
-        st.metric("🏠 Total Rooms", f"{total_rooms:,}", delta=None)
-        st.metric("🛏️ Total Bedrooms", f"{total_bedrooms:,}", delta=None)
+        st.metric("🏠 Total Rooms", f"{total_rooms:,}")
+        st.metric("🛏️ Total Bedrooms", f"{total_bedrooms:,}")
     
     with col2:
-        st.metric("👥 Population", f"{population:,}", delta=None)
-        st.metric("🏘️ Households", f"{households:,}", delta=None)
+        st.metric("👥 Population", f"{population:,}")
+        st.metric("🏘️ Households", f"{households:,}")
     
     with col3:
-        st.metric("📅 Housing Age", f"{housing_median_age} yrs", delta=None)
-        st.metric("💵 Median Income", f"${median_income * 10000:,.0f}", delta=None)
+        st.metric("📅 Housing Age", f"{housing_median_age} yrs")
+        st.metric("💵 Median Income", f"${median_income * 10000:,.0f}")
     
     with col4:
-        st.metric("🏠 Rooms/House", f"{df_input['rooms_per_household'].values[0]:.2f}", delta=None)
-        st.metric("👤 Pop/House", f"{df_input['population_per_household'].values[0]:.2f}", delta=None)
+        st.metric("🏠 Rooms/House", f"{rooms_per_hh:.2f}")
+        st.metric("👤 Pop/House", f"{pop_per_hh:.2f}")
 
+
+# ============================================================================
+# WELCOME SCREEN (No Prediction Yet)
+# ============================================================================
 else:
-    # Welcome message with enhanced design
+    # Welcome message
     st.markdown("""
     <div class='info-box'>
         <h2 style='color: white; margin-top: 0;'>👋 Welcome to the California House Price Predictor</h2>
@@ -440,7 +582,7 @@ else:
         </div>
         """, unsafe_allow_html=True)
     
-    # How to use
+    # How to use guide
     st.markdown("---")
     st.markdown("### 🚀 How to Use This App")
     
@@ -482,7 +624,7 @@ else:
         </div>
         """, unsafe_allow_html=True)
     
-    # Additional info
+    # Additional information
     st.markdown("---")
     st.markdown("""
     <div class='info-section'>
@@ -494,3 +636,15 @@ else:
         </p>
     </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown("""
+    <div class='info-section'>
+        <h4>🔍 Model Details</h4>
+        <p>
+            The prediction model uses <strong>Multiple Linear Regression</strong> with engineered features to estimate house prices. 
+            The model achieves an R² score of approximately <strong>0.60</strong>, meaning it explains 60% of the variance in house prices. 
+            This is considered reasonable performance for linear models on real-world housing data.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
