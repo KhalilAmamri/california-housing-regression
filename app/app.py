@@ -19,45 +19,45 @@ st.markdown("""
     /* Main container styling */
     .main {
         padding: 2rem;
-        background-color: #f8fafc;
+        background-color: #0f172a;
     }
     
     /* Header styling */
     h1 {
-        color: #0f172a;
+        color: #f8fafc;
         font-weight: 700;
         padding-bottom: 1rem;
     }
     
     h3 {
-        color: #1e293b;
+        color: #e2e8f0;
         font-weight: 600;
         margin-top: 1rem;
     }
     
     h4 {
-        color: #334155;
+        color: #cbd5e1;
     }
     
     /* Metric card styling */
     [data-testid="stMetricValue"] {
         font-size: 1.8rem;
         font-weight: 600;
-        color: #0f172a;
+        color: #f8fafc;
     }
     
     [data-testid="stMetricLabel"] {
-        color: #475569;
+        color: #cbd5e1;
         font-weight: 500;
     }
     
     /* Sidebar styling */
     [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
     }
     
     [data-testid="stSidebar"] h3 {
-        color: #1e293b;
+        color: #e2e8f0;
     }
     
     /* Button styling */
@@ -66,95 +66,99 @@ st.markdown("""
         border-radius: 8px;
         padding: 0.6rem 1.2rem;
         font-size: 1.1rem;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
         border: none;
         color: white;
     }
     
     .stButton>button:hover {
-        background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
     }
     
     /* Info box styling */
     .info-box {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
         padding: 2rem;
         border-radius: 12px;
         color: white;
         margin: 1rem 0;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
     }
     
     .price-display {
-        background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
         padding: 2rem;
         border-radius: 12px;
         text-align: center;
-        box-shadow: 0 4px 12px rgba(56, 239, 125, 0.3);
+        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
     }
     
     .feature-card {
-        background: #ffffff;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
         padding: 1.5rem;
         border-radius: 10px;
-        border-left: 4px solid #667eea;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        border-left: 4px solid #14b8a6;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
         margin: 1rem 0;
     }
     
     .feature-card p {
-        color: #475569;
+        color: #cbd5e1;
         line-height: 1.6;
     }
     
     .feature-card strong {
-        color: #1e293b;
+        color: #f8fafc;
     }
     
     .feature-card ul {
-        color: #475569;
+        color: #cbd5e1;
+    }
+    
+    .feature-card li {
+        color: #cbd5e1;
     }
     
     /* Step card styling */
     .step-card {
-        background: #ffffff;
-        border: 2px solid #e2e8f0;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        border: 2px solid #475569;
         border-radius: 10px;
         padding: 1.5rem;
         transition: all 0.3s ease;
     }
     
     .step-card:hover {
-        border-color: #667eea;
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
+        border-color: #14b8a6;
+        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
     }
     
     .step-card h4 {
-        color: #667eea;
+        color: #14b8a6;
         margin: 0.5rem 0;
     }
     
     .step-card p {
-        color: #64748b;
+        color: #cbd5e1;
         margin-bottom: 0;
     }
     
     /* Info section styling */
     .info-section {
-        background: #ffffff;
-        border-left: 5px solid #667eea;
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        border-left: 5px solid #14b8a6;
         border-radius: 8px;
         padding: 1.5rem;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     
     .info-section h4 {
-        color: #1e293b;
+        color: #f8fafc;
         margin-top: 0;
     }
     
     .info-section p {
-        color: #475569;
+        color: #cbd5e1;
         margin-bottom: 0;
         line-height: 1.6;
     }
@@ -163,7 +167,7 @@ st.markdown("""
     hr {
         margin: 2rem 0;
         border: none;
-        border-top: 2px solid #e2e8f0;
+        border-top: 2px solid #334155;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -187,13 +191,14 @@ bedrooms_median = artifact['bedrooms_median']
 
 # Header with gradient background
 st.markdown("""
-<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+<div style='background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
             padding: 2.5rem; 
             border-radius: 15px; 
             margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);'>
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.5);
+            border: 1px solid #334155;'>
     <h1 style='color: white; margin: 0; font-size: 3rem;'>🏠 California House Price Predictor</h1>
-    <p style='color: #f0f0f0; font-size: 1.2rem; margin-top: 0.5rem;'>
+    <p style='color: #cbd5e1; font-size: 1.2rem; margin-top: 0.5rem;'>
         AI-Powered Price Estimation Using Multiple Linear Regression
     </p>
 </div>
@@ -201,12 +206,12 @@ st.markdown("""
 
 # Sidebar inputs with enhanced styling
 st.sidebar.markdown("""
-<div style='background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+<div style='background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%); 
             padding: 1.5rem; 
             border-radius: 10px; 
             margin-bottom: 1.5rem;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);'>
+            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);'>
     <h2 style='color: white; margin: 0;'>📝 Property Details</h2>
 </div>
 """, unsafe_allow_html=True)
@@ -290,7 +295,7 @@ if predict_button:
     with col2:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #667eea; margin-top: 0;'>🤖 Model Information</h3>
+            <h3 style='color: #14b8a6; margin-top: 0;'>🤖 Model Information</h3>
             <p><strong>Algorithm:</strong> {}</p>
             <p><strong>Total Features:</strong> {}</p>
             <p><strong>Engineered Features:</strong> {}</p>
@@ -301,7 +306,7 @@ if predict_button:
     with col3:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #667eea; margin-top: 0;'>📊 Key Metrics</h3>
+            <h3 style='color: #14b8a6; margin-top: 0;'>📊 Key Metrics</h3>
             <p><strong>Rooms/Household:</strong> {:.2f}</p>
             <p><strong>Bedrooms/Room:</strong> {:.3f}</p>
             <p><strong>Population/Household:</strong> {:.2f}</p>
@@ -325,12 +330,12 @@ if predict_button:
         mode='markers+text',
         marker=dict(
             size=20,
-            color='#667eea',
+            color='#14b8a6',
             symbol='circle',
             line=dict(width=3, color='white')
         ),
         textposition='top center',
-        textfont=dict(size=14, color='#0f172a', family='Arial', weight='bold')
+        textfont=dict(size=14, color='#f8fafc', family='Arial', weight='bold')
     ))
     
     fig.update_geos(
@@ -338,12 +343,12 @@ if predict_button:
         center=dict(lon=-119.5, lat=37),
         projection_scale=4,
         showland=True,
-        landcolor='#f1f5f9',
-        coastlinecolor='#667eea',
+        landcolor='#1e293b',
+        coastlinecolor='#14b8a6',
         showcountries=True,
-        countrycolor='#cbd5e1',
+        countrycolor='#334155',
         showlakes=True,
-        lakecolor='#bfdbfe'
+        lakecolor='#0f172a'
     )
     
     fig.update_layout(
@@ -398,7 +403,7 @@ else:
     with col1:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #667eea; margin-top: 0;'>🎯 Key Features</h3>
+            <h3 style='color: #14b8a6; margin-top: 0;'>🎯 Key Features</h3>
             <ul style='line-height: 2;'>
                 <li><strong>AI-Powered Predictions</strong> - Multiple Linear Regression model</li>
                 <li><strong>Feature Engineering</strong> - 3 automated derived features</li>
@@ -412,7 +417,7 @@ else:
     with col2:
         st.markdown("""
         <div class='feature-card'>
-            <h3 style='color: #667eea; margin-top: 0;'>📊 Model Performance</h3>
+            <h3 style='color: #14b8a6; margin-top: 0;'>📊 Model Performance</h3>
             <ul style='line-height: 2;'>
                 <li><strong>R² Score:</strong> ~0.60 (60% variance explained)</li>
                 <li><strong>Training Data:</strong> 20,640 California properties</li>
