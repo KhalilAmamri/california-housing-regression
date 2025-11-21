@@ -241,6 +241,18 @@ st.sidebar.markdown("---")
 predict_button = st.sidebar.button("🔮 Predict Price", type="primary", use_container_width=True)
 
 if predict_button:
+    # Validation checks
+    if households == 0:
+        st.error("❌ Households cannot be zero!")
+        st.stop()
+    
+    if total_rooms < total_bedrooms:
+        st.error("❌ Total Bedrooms cannot exceed Total Rooms!")
+        st.stop()
+    
+    if population < households:
+        st.warning("⚠️ Warning: Population is less than Households (unusual but allowed)")
+    
     # Create input dataframe
     input_data = {
         'longitude': longitude,
