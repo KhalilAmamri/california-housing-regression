@@ -626,25 +626,32 @@ else:
     
     # Additional information
     st.markdown("---")
-    st.markdown("""
-    <div class='info-section'>
-        <h4>ℹ️ About the Dataset</h4>
-        <p>
-            This model is trained on the <strong>California Housing Dataset</strong>, which contains information from 
-            the 1990 California census. The dataset includes median house values, location coordinates, housing characteristics, 
-            and demographic information for California districts.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("### 📚 Learn More")
     
-    st.markdown("""
-    <div class='info-section'>
-        <h4>🔍 Model Details</h4>
-        <p>
-            The prediction model uses <strong>Multiple Linear Regression</strong> with engineered features to estimate house prices. 
-            The model achieves an R² score of approximately <strong>0.60</strong>, meaning it explains 60% of the variance in house prices. 
-            This is considered reasonable performance for linear models on real-world housing data.
-        </p>
-    </div>
-    """, unsafe_allow_html=True)
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown("""
+        <div class='info-section'>
+            <h4>ℹ️ About the Dataset</h4>
+            <p>
+                This model is trained on the <strong>California Housing Dataset</strong>, which contains information from 
+                the 1990 California census. The dataset includes median house values, location coordinates, housing characteristics, 
+                and demographic information for California districts.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown("""
+        <div class='info-section'>
+            <h4>🔍 Model Details</h4>
+            <p>
+                The prediction model uses <strong>Multiple Linear Regression</strong> with engineered features to estimate house prices. 
+                The model achieves an R² score of approximately <strong>0.60</strong>, meaning it explains 60% of the variance in house prices. 
+                This is considered reasonable performance for linear models on real-world housing data.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
 
