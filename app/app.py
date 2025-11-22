@@ -64,26 +64,29 @@ st.markdown("""
         top: 0.75rem;
         right: 1rem;
         z-index: 999999;
-        background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-        color: white;
+        background: linear-gradient(135deg, #0a5c52 0%, #064e3b 100%);
+        color: #ffffff;
         padding: 0.5rem 1.2rem;
         border-radius: 8px;
         text-decoration: none;
-        font-weight: 600;
-        font-size: 0.9rem;
-        box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        font-weight: 700;
+        font-size: 0.95rem;
+        box-shadow: 0 3px 12px rgba(20, 184, 166, 0.5);
         transition: all 0.3s ease;
         display: flex;
         align-items: center;
         gap: 0.5rem;
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        letter-spacing: 0.3px;
     }
     
     .github-button:hover {
-        background: linear-gradient(135deg, #4f46e5 0%, #4338ca 100%);
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
         transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.5);
-        color: white;
+        box-shadow: 0 5px 16px rgba(20, 184, 166, 0.7);
+        color: #ffffff;
         text-decoration: none;
+        border-color: rgba(255, 255, 255, 0.3);
     }
     
     /* Main container styling */
