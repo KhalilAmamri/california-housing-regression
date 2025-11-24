@@ -257,7 +257,7 @@ def load_model():
     Returns:
         dict: Dictionary containing model, scaler, and other preprocessing objects
     """
-    model_path = Path(__file__).parent.parent / 'models' / 'best_model.pkl'
+    model_path = Path(__file__).parent.parent / 'models' / 'linear_regression_model.pkl'
     
     if not model_path.exists():
         st.error(f"⚠️ Model file not found at: {model_path}")
