@@ -641,7 +641,7 @@ else:
                 <li><strong>R² Score:</strong> ~0.60 (60% variance explained)</li>
                 <li><strong>Training Data:</strong> 20,640 California properties</li>
                 <li><strong>Features Used:</strong> 9 input + 3 engineered</li>
-                <li><strong>Model Type:</strong> Linear/Ridge/Lasso comparison</li>
+                <li><strong>Model Type:</strong> Linear Regression (single model)</li>
                 <li><strong>Accuracy:</strong> Production-ready performance</li>
             </ul>
         </div>
