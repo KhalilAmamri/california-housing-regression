@@ -1,12 +1,3 @@
-"""
-California House Price Predictor
-=================================
-A Streamlit web application for predicting California house prices using Multiple Linear Regression.
-Trained on the California Housing Dataset (1990 census data).
-
-
-Repository: california-housing-regression
-"""
 
 # ============================================================================
 # IMPORTS
@@ -33,12 +24,12 @@ st.set_page_config(
         'About': '''
         # California Housing Price Predictor 🏠
         
-        **Built with Multiple Linear Regression**
+        **Built with Multivariate Linear Regression**
         
         This application predicts California house prices using machine learning.
         
         - **Dataset:** California Housing (1990 Census)
-        - **Model:** Linear Regression with Feature Engineering
+        - **Model:** Multivariate Linear Regression with Feature Engineering
         - **R² Score:** ~0.60
         - **Author:** Khalil Amamri
         
@@ -47,203 +38,6 @@ st.set_page_config(
     }
 )
 
-# ============================================================================
-# CUSTOM CSS STYLING
-# ============================================================================
-st.markdown("""
-<style>
-    /* Hide Streamlit default elements */
-    [data-testid="stToolbar"] {visibility: hidden !important;}
-    #MainMenu {visibility: hidden !important;}
-    footer {visibility: hidden !important;}
-    header {visibility: visible !important;}
-    
-    /* Custom GitHub button in top-right corner */
-    .github-button {
-        position: fixed;
-        top: 0.75rem;
-        right: 1rem;
-        z-index: 999999;
-        background: linear-gradient(135deg, #0a5c52 0%, #064e3b 100%);
-        color: #ffffff;
-        padding: 0.5rem 1.2rem;
-        border-radius: 8px;
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 0.95rem;
-        box-shadow: 0 3px 12px rgba(20, 184, 166, 0.5);
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        border: 1.5px solid rgba(255, 255, 255, 0.15);
-        letter-spacing: 0.3px;
-    }
-    
-    .github-button:hover {
-        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 16px rgba(20, 184, 166, 0.7);
-        color: #ffffff;
-        text-decoration: none;
-        border-color: rgba(255, 255, 255, 0.3);
-    }
-    
-    /* Main container styling */
-    .main {
-        padding: 2rem;
-        background-color: #0f172a;
-    }
-    
-    /* Header styling */
-    h1 {
-        color: #f8fafc;
-        font-weight: 700;
-        padding-bottom: 1rem;
-    }
-    
-    h3 {
-        color: #e2e8f0;
-        font-weight: 600;
-        margin-top: 1rem;
-    }
-    
-    h4 {
-        color: #cbd5e1;
-    }
-    
-    /* Metric card styling */
-    [data-testid="stMetricValue"] {
-        font-size: 1.8rem;
-        font-weight: 600;
-        color: #f8fafc;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        color: #cbd5e1;
-        font-weight: 500;
-    }
-    
-    /* Sidebar styling */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
-    }
-    
-    [data-testid="stSidebar"] h3 {
-        color: #e2e8f0;
-    }
-    
-    /* Button styling */
-    .stButton>button {
-        font-weight: 600;
-        border-radius: 8px;
-        padding: 0.6rem 1.2rem;
-        font-size: 1.1rem;
-        background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
-        border: none;
-        color: white;
-    }
-    
-    .stButton>button:hover {
-        background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
-    }
-    
-    /* Info box styling */
-    .info-box {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        padding: 2rem;
-        border-radius: 12px;
-        color: white;
-        margin: 1rem 0;
-        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
-    }
-    
-    .price-display {
-        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
-        padding: 2rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
-    }
-    
-    .feature-card {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        padding: 1.5rem;
-        border-radius: 10px;
-        border-left: 4px solid #14b8a6;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        margin: 1rem 0;
-    }
-    
-    .feature-card p {
-        color: #cbd5e1;
-        line-height: 1.6;
-    }
-    
-    .feature-card strong {
-        color: #f8fafc;
-    }
-    
-    .feature-card ul {
-        color: #cbd5e1;
-    }
-    
-    .feature-card li {
-        color: #cbd5e1;
-    }
-    
-    /* Step card styling */
-    .step-card {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        border: 2px solid #475569;
-        border-radius: 10px;
-        padding: 1.5rem;
-        transition: all 0.3s ease;
-    }
-    
-    .step-card:hover {
-        border-color: #14b8a6;
-        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
-    }
-    
-    .step-card h4 {
-        color: #14b8a6;
-        margin: 0.5rem 0;
-    }
-    
-    .step-card p {
-        color: #cbd5e1;
-        margin-bottom: 0;
-    }
-    
-    /* Info section styling */
-    .info-section {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        border-left: 5px solid #14b8a6;
-        border-radius: 8px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    }
-    
-    .info-section h4 {
-        color: #f8fafc;
-        margin-top: 0;
-    }
-    
-    .info-section p {
-        color: #cbd5e1;
-        margin-bottom: 0;
-        line-height: 1.6;
-    }
-    
-    /* Divider styling */
-    hr {
-        margin: 2rem 0;
-        border: none;
-        border-top: 2px solid #334155;
-    }
-</style>
-""", unsafe_allow_html=True)
 
 
 # ============================================================================
@@ -277,12 +71,14 @@ bedrooms_median = artifact['bedrooms_median']
 
 # Add GitHub button in top-right corner
 st.markdown("""
-<a href='https://github.com/KhalilAmamri/california-housing-regression' target='_blank' class='github-button'>
-    <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
-        <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-    </svg>
-    <span>GitHub</span>
-</a>
+<div class='github-button'>
+    <a href='https://github.com/KhalilAmamri/california-housing-regression' target='_blank'>
+        <svg width="20" height="20" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+        </svg>
+        <span>GitHub</span>
+    </a>
+</div>
 """, unsafe_allow_html=True)
 
 
@@ -290,15 +86,10 @@ st.markdown("""
 # HEADER SECTION
 # ============================================================================
 st.markdown("""
-<div style='background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); 
-            padding: 2.5rem; 
-            border-radius: 15px; 
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.5);
-            border: 1px solid #334155;'>
+<div class='header-box'>
     <h1 style='color: white; margin: 0; font-size: 3rem;'>🏠 California House Price Predictor</h1>
     <p style='color: #cbd5e1; font-size: 1.2rem; margin-top: 0.5rem;'>
-        AI-Powered Price Estimation Using Multiple Linear Regression
+        Predict house prices using machine learning with multiple input features
     </p>
 </div>
 """, unsafe_allow_html=True)
@@ -307,16 +98,7 @@ st.markdown("""
 # ============================================================================
 # SIDEBAR - INPUT FORM
 # ============================================================================
-st.sidebar.markdown("""
-<div style='background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%); 
-            padding: 1.5rem; 
-            border-radius: 10px; 
-            margin-bottom: 1.5rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);'>
-    <h2 style='color: white; margin: 0;'>📝 Property Details</h2>
-</div>
-""", unsafe_allow_html=True)
+st.sidebar.markdown("""<div class='sidebar-header'><h2 style='color: white; margin: 0;'>📝 Property Details</h2></div>""", unsafe_allow_html=True)
 
 # Location inputs
 st.sidebar.markdown("### 📍 Location")
@@ -412,9 +194,7 @@ predict_button = st.sidebar.button(
 # PREDICTION LOGIC
 # ============================================================================
 if predict_button:
-    # -------------------------------------------------------------------------
-    # Input Validation
-    # -------------------------------------------------------------------------
+    # Basic validation
     if households == 0:
         st.error("❌ Households cannot be zero!")
         st.stop()
@@ -426,10 +206,7 @@ if predict_button:
     if population < households:
         st.warning("⚠️ Warning: Population is less than Households (unusual but allowed)")
     
-    # -------------------------------------------------------------------------
-    # Data Preparation
-    # -------------------------------------------------------------------------
-    # Create input dataframe
+    # Assemble raw input features
     input_data = {
         'longitude': longitude,
         'latitude': latitude,
@@ -444,49 +221,43 @@ if predict_button:
     
     df_input = pd.DataFrame([input_data])
     
-    # -------------------------------------------------------------------------
-    # Feature Engineering
-    # -------------------------------------------------------------------------
+    # Create derived features (improve prediction by adding ratios)
+    # These features capture household density and room distribution patterns
     df_input['rooms_per_household'] = df_input['total_rooms'] / df_input['households']
     df_input['bedrooms_per_room'] = df_input['total_bedrooms'] / df_input['total_rooms']
     df_input['population_per_household'] = df_input['population'] / df_input['households']
     
-    # -------------------------------------------------------------------------
-    # Encoding and Alignment
-    # -------------------------------------------------------------------------
-    # One-hot encode ocean_proximity
+    # Save original engineered features BEFORE scaling (for display)
+    rooms_per_hh_original = df_input['rooms_per_household'].values[0]
+    bedrooms_per_room_original = df_input['bedrooms_per_room'].values[0]
+    pop_per_hh_original = df_input['population_per_household'].values[0]
+    
+    # One-hot encode ocean proximity category (convert to binary columns)
     df_input = pd.get_dummies(df_input, columns=['ocean_proximity'], drop_first=True)
     
-    # Ensure all columns match training data
+    # Align columns to match training data (add missing dummy columns as zeros)
     for col in final_columns:
         if col not in df_input.columns:
             df_input[col] = 0
     
     df_input = df_input[final_columns]
     
-    # -------------------------------------------------------------------------
-    # Feature Scaling
-    # -------------------------------------------------------------------------
+    # Scale numeric features (standardize to mean=0, std=1)
     df_input[numeric_cols] = scaler.transform(df_input[numeric_cols])
     
-    # -------------------------------------------------------------------------
-    # Make Prediction
-    # -------------------------------------------------------------------------
+    # Predict house price
     raw_prediction = model.predict(df_input)[0]
     
-    # Prevent negative prices (house prices cannot be negative)
+    # Clamp negative predictions to zero
     prediction = max(raw_prediction, 0.0)
     
-    # Show warning if price was clamped to zero
     if prediction == 0.0:
         st.warning("⚠️ Inputs are unrealistic or the area is extremely low-value – price set to $0")
     
-    # Convert to Tunisian Dinar (1 USD = 3.15 TND)
+    # Convert to Tunisian Dinar
     prediction_tnd = prediction * 3.15
     
-    # -------------------------------------------------------------------------
-    # Display Results
-    # -------------------------------------------------------------------------
+    # Display prediction results
     st.markdown("### 💰 Prediction Results")
     
     col1, col2, col3 = st.columns([2, 2, 2])
@@ -515,24 +286,19 @@ if predict_button:
     
     # Key Metrics
     with col3:
-        rooms_per_hh = df_input['rooms_per_household'].values[0]
-        bedrooms_per_room = df_input['bedrooms_per_room'].values[0]
-        pop_per_hh = df_input['population_per_household'].values[0]
         annual_income = median_income * 10000
         
         st.markdown(f"""
         <div class='feature-card'>
             <h3 style='color: #14b8a6; margin-top: 0;'>📊 Key Metrics</h3>
-            <p><strong>Rooms/Household:</strong> {rooms_per_hh:.2f}</p>
-            <p><strong>Bedrooms/Room:</strong> {bedrooms_per_room:.3f}</p>
-            <p><strong>Population/Household:</strong> {pop_per_hh:.2f}</p>
+            <p><strong>Rooms/Household:</strong> {rooms_per_hh_original:.2f}</p>
+            <p><strong>Bedrooms/Room:</strong> {bedrooms_per_room_original:.3f}</p>
+            <p><strong>Population/Household:</strong> {pop_per_hh_original:.2f}</p>
             <p><strong>Annual Income:</strong> ${annual_income:,.0f}</p>
         </div>
         """, unsafe_allow_html=True)
     
-    # -------------------------------------------------------------------------
-    # Interactive Map
-    # -------------------------------------------------------------------------
+    # Interactive map visualization
     st.markdown("---")
     st.markdown("### 🗺️ Property Location on California Map")
     
@@ -573,9 +339,7 @@ if predict_button:
     
     st.plotly_chart(fig, use_container_width=True)
     
-    # -------------------------------------------------------------------------
-    # Detailed Property Analysis
-    # -------------------------------------------------------------------------
+    # Detailed numeric breakdown
     st.markdown("---")
     st.markdown("### 📋 Detailed Property Analysis")
     
@@ -594,13 +358,11 @@ if predict_button:
         st.metric("💵 Median Income", f"${median_income * 10000:,.0f}")
     
     with col4:
-        st.metric("🏠 Rooms/House", f"{rooms_per_hh:.2f}")
-        st.metric("👤 Pop/House", f"{pop_per_hh:.2f}")
+        st.metric("🏠 Rooms/House", f"{rooms_per_hh_original:.2f}")
+        st.metric("👤 Pop/House", f"{pop_per_hh_original:.2f}")
 
 
-# ============================================================================
-# WELCOME SCREEN (No Prediction Yet)
-# ============================================================================
+# WELCOME (shown before prediction button clicked)
 else:
     # Welcome message
     st.markdown("""
@@ -624,7 +386,7 @@ else:
         <div class='feature-card'>
             <h3 style='color: #14b8a6; margin-top: 0;'>🎯 Key Features</h3>
             <ul style='line-height: 2;'>
-                <li><strong>AI-Powered Predictions</strong> - Multiple Linear Regression model</li>
+                <li><strong>AI-Powered Predictions</strong> - Multivariate Linear Regression model</li>
                 <li><strong>Feature Engineering</strong> - 3 automated derived features</li>
                 <li><strong>Interactive Map</strong> - Visualize property location</li>
                 <li><strong>Multi-Currency</strong> - Prices in USD and TND</li>
@@ -641,7 +403,7 @@ else:
                 <li><strong>R² Score:</strong> ~0.60 (60% variance explained)</li>
                 <li><strong>Training Data:</strong> 20,640 California properties</li>
                 <li><strong>Features Used:</strong> 9 input + 3 engineered</li>
-                <li><strong>Model Type:</strong> Linear Regression (single model)</li>
+                <li><strong>Model Type:</strong> Multivariate Linear Regression (single model)</li>
                 <li><strong>Accuracy:</strong> Production-ready performance</li>
             </ul>
         </div>
@@ -712,11 +474,231 @@ else:
         <div class='info-section'>
             <h4>🔍 Model Details</h4>
             <p>
-                The prediction model uses <strong>Multiple Linear Regression</strong> with engineered features to estimate house prices. 
+                The prediction model uses <strong>Multivariate Linear Regression</strong> with engineered features to estimate house prices. 
                 The model achieves an R² score of approximately <strong>0.60</strong>, meaning it explains 60% of the variance in house prices. 
                 This is considered reasonable performance for linear models on real-world housing data.
             </p>
         </div>
         """, unsafe_allow_html=True)
+
+
+# ============================================================================
+# ALL CSS STYLING (Consolidated at end for code clarity)
+# ============================================================================
+st.markdown("""
+<style>
+    /* Hide Streamlit default elements */
+    [data-testid="stToolbar"] {visibility: hidden !important;}
+    #MainMenu {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    header {visibility: visible !important;}
+    
+    /* Main container */
+    .main {
+        padding: 2rem;
+        background-color: #0f172a;
+    }
+    
+    /* GitHub button (fixed top-right) */
+    .github-button {
+        position: fixed;
+        top: 0.75rem;
+        right: 1rem;
+        z-index: 999999;
+    }
+    
+    .github-button a {
+        background: linear-gradient(135deg, #0a5c52 0%, #064e3b 100%);
+        color: #ffffff;
+        padding: 0.5rem 1.2rem;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 0.95rem;
+        box-shadow: 0 3px 12px rgba(20, 184, 166, 0.5);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1.5px solid rgba(255, 255, 255, 0.15);
+        letter-spacing: 0.3px;
+    }
+    
+    .github-button a:hover {
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 16px rgba(20, 184, 166, 0.7);
+        color: #ffffff;
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+    
+    /* Header styling */
+    .header-box {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        padding: 2.5rem;
+        border-radius: 15px;
+        margin-bottom: 2rem;
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.5);
+        border: 1px solid #334155;
+    }
+    
+    h1 {
+        color: #f8fafc;
+        font-weight: 700;
+    }
+    
+    h3 {
+        color: #e2e8f0;
+        font-weight: 600;
+        margin-top: 1rem;
+    }
+    
+    h4 {
+        color: #cbd5e1;
+    }
+    
+    /* Sidebar styling */
+    [data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    }
+    
+    [data-testid="stSidebar"] h3 {
+        color: #e2e8f0;
+    }
+    
+    .sidebar-header {
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-bottom: 1.5rem;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.4);
+    }
+    
+    /* Button styling */
+    .stButton>button {
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 0.6rem 1.2rem;
+        font-size: 1.1rem;
+        background: linear-gradient(135deg, #14b8a6 0%, #0f766e 100%);
+        border: none;
+        color: white;
+    }
+    
+    .stButton>button:hover {
+        background: linear-gradient(135deg, #0f766e 0%, #0d9488 100%);
+    }
+    
+    /* Metric card styling */
+    [data-testid="stMetricValue"] {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: #f8fafc;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #cbd5e1;
+        font-weight: 500;
+    }
+    
+    /* Price display card */
+    .price-display {
+        background: linear-gradient(135deg, #0f766e 0%, #14b8a6 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+    }
+    
+    /* Feature card */
+    .feature-card {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        padding: 1.5rem;
+        border-radius: 10px;
+        border-left: 4px solid #14b8a6;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        margin: 1rem 0;
+    }
+    
+    .feature-card p {
+        color: #cbd5e1;
+        line-height: 1.6;
+    }
+    
+    .feature-card strong {
+        color: #f8fafc;
+    }
+    
+    .feature-card ul {
+        color: #cbd5e1;
+    }
+    
+    .feature-card li {
+        color: #cbd5e1;
+    }
+    
+    /* Step card */
+    .step-card {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        border: 2px solid #475569;
+        border-radius: 10px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .step-card:hover {
+        border-color: #14b8a6;
+        box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+    }
+    
+    .step-card h4 {
+        color: #14b8a6;
+        margin: 0.5rem 0;
+    }
+    
+    .step-card p {
+        color: #cbd5e1;
+        margin-bottom: 0;
+    }
+    
+    /* Info box */
+    .info-box {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        padding: 2rem;
+        border-radius: 12px;
+        color: white;
+        margin: 1rem 0;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.3);
+    }
+    
+    /* Info section */
+    .info-section {
+        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+        border-left: 5px solid #14b8a6;
+        border-radius: 8px;
+        padding: 1.5rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    .info-section h4 {
+        color: #f8fafc;
+        margin-top: 0;
+    }
+    
+    .info-section p {
+        color: #cbd5e1;
+        margin-bottom: 0;
+        line-height: 1.6;
+    }
+    
+    /* Divider */
+    hr {
+        margin: 2rem 0;
+        border: none;
+        border-top: 2px solid #334155;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
